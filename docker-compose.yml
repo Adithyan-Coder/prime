@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  backend:
+    image: python:3.11-slim
+    container_name: prime-backend
+    working_dir: /app
+    volumes:
+      - ./prime_backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=your-secret-key-change-in-production
+      - DEBUG=True
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - SUPABASE_JWT_SECRET=${SUPABASE_JWT_SECRET}
+    command: >
+      sh -c "pip install -r requirements.txt &&
+             python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - prime-network
+
+  frontend:
+    image: node:18-alpine
+    container_name: prime-frontend
+    working_dir: /app
+    volumes:
+      - ./backupprime:/app
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    command: >
+      sh -c "npm install &&
+             npm run dev"
+    networks:
+      - prime-network
+    depends_on:
+      - backend
+
+networks:
+  prime-network:
+    driver: bridge
