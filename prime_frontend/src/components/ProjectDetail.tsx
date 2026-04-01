@@ -336,20 +336,6 @@ export function ProjectDetail({
                   Delete Project
                 </button>
               )}
-              {user.role === 'faculty' && !hasAccess && (
-                <button
-                  onClick={() => !hasPendingRequest && onRequestAccess(project.id)}
-                  disabled={hasPendingRequest}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition shadow-lg ${
-                    hasPendingRequest
-                      ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
-                      : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-500/30'
-                  }`}
-                >
-                  <Lock className="w-5 h-5" />
-                  {hasPendingRequest ? 'Request Sent' : 'Request Access'}
-                </button>
-              )}
               {!isOwner && !isTeamMember && !hasAccess && (
                 <button
                   onClick={() => !hasPendingRequest && onRequestAccess(project.id)}
